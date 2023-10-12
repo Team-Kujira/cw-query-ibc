@@ -1,7 +1,7 @@
 //!    Custom querier implementation for Kujira's chain core bindings
 
 use cosmwasm_std::{Deps, DepsMut, QuerierWrapper, QueryRequest, StdResult, Binary};
-use crate::binding::{KujiraQuery, IbcQuery};
+use crate::binding::{KujiraQuery, IbcQuery, VerifyMembershipResponse, VerifyNonMembershipResponse};
 
 /// This is a helper wrapper to easily use our custom queries
 pub struct KujiraQuerier<'a> {
@@ -13,6 +13,7 @@ impl<'a> KujiraQuerier<'a> {
         KujiraQuerier { querier }
     }
 
+    // Query for the membership verification
     pub fn query_verify_membership(
       &self, 
       connection: String,
@@ -20,22 +21,25 @@ impl<'a> KujiraQuerier<'a> {
       revision_height: u64,
       proof: Binary,
       value: Binary,
-    ) -> StdResult<Binary> {
+      path: String,
+    ) -> StdResult<VerifyMembershipResponse> {
         let query = KujiraQuery::Ibc(IbcQuery::VerifyMembership {
-            connection, revision_number, revision_height, proof, value,
+            connection, revision_number, revision_height, proof, value, path,
         });
         let request: QueryRequest<KujiraQuery> = KujiraQuery::into(query);
         self.querier.query(&request)
     }
+    // Query for the non-membership verification
     pub fn query_verify_non_membership(
       &self, 
       connection: String,
       revision_number: u64,
       revision_height: u64,
       proof: Binary,
-    ) -> StdResult<Binary> {
+      path: String,
+    ) -> StdResult<VerifyNonMembershipResponse> {
         let query = KujiraQuery::Ibc(IbcQuery::VerifyNonMembership {
-            connection, revision_number, revision_height, proof,
+            connection, revision_number, revision_height, proof, path,
         });
         let request: QueryRequest<KujiraQuery> = KujiraQuery::into(query);
         self.querier.query(&request)

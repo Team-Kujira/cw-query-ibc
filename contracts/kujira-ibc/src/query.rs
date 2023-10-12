@@ -9,11 +9,13 @@ pub enum QueryMsg {
         revision_height: u64, 
         proof: Binary,
         value: Binary,
+        path: String,
     },
     VerifyNonMembership {
         connection: String,
         revision_number: u64, 
         revision_height: u64, 
         proof: Binary,
+        path: String,
     },
 }
