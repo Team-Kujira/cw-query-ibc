@@ -21,10 +21,11 @@ impl<'a> KujiraQuerier<'a> {
       revision_height: u64,
       proof: Binary,
       value: Binary,
-      path: String,
+      path_prefix: String,
+      path_key: String,
     ) -> StdResult<VerifyMembershipResponse> {
         let query = KujiraQuery::Ibc(IbcQuery::VerifyMembership {
-            connection, revision_number, revision_height, proof, value, path,
+            connection, revision_number, revision_height, proof, value, path_prefix, path_key,
         });
         let request: QueryRequest<KujiraQuery> = KujiraQuery::into(query);
         self.querier.query(&request)
@@ -36,10 +37,11 @@ impl<'a> KujiraQuerier<'a> {
       revision_number: u64,
       revision_height: u64,
       proof: Binary,
-      path: String,
+      path_prefix: String,
+      path_key: String,
     ) -> StdResult<VerifyNonMembershipResponse> {
         let query = KujiraQuery::Ibc(IbcQuery::VerifyNonMembership {
-            connection, revision_number, revision_height, proof, path,
+            connection, revision_number, revision_height, proof, path_prefix, path_key,
         });
         let request: QueryRequest<KujiraQuery> = KujiraQuery::into(query);
         self.querier.query(&request)

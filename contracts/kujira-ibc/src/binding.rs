@@ -24,7 +24,8 @@ pub enum IbcQuery {
     revision_height: u64, 
     proof: Binary,
     value: Binary,
-    path: String,
+    path_prefix: String,
+    path_key: String,
   },
   // VerifyMembership will verifies the absence of a merkle proof against the given connection, revision height, and path
   VerifyNonMembership {
@@ -32,7 +33,8 @@ pub enum IbcQuery {
     revision_number: u64, 
     revision_height: u64, 
     proof: Binary,
-    path: String,
+    path_prefix: String,
+    path_key: String,
   },
 }
 

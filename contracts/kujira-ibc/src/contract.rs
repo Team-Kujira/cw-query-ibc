@@ -40,7 +40,8 @@ pub fn query(deps: Deps<KujiraQuery>, _env: Env, msg: QueryMsg) -> StdResult<Bin
             revision_height,
             proof,
             value,
-            path,
+            path_prefix,
+            path_key,
         } => to_binary(&query_verify_membership(
             deps,
             connection,
@@ -48,7 +49,8 @@ pub fn query(deps: Deps<KujiraQuery>, _env: Env, msg: QueryMsg) -> StdResult<Bin
             revision_height,
             proof,
             value,
-            path,
+            path_prefix,
+            path_key,
         )),
 
         QueryMsg::VerifyNonMembership {
@@ -56,14 +58,16 @@ pub fn query(deps: Deps<KujiraQuery>, _env: Env, msg: QueryMsg) -> StdResult<Bin
             revision_number,
             revision_height,
             proof,
-            path,
+            path_prefix,
+            path_key,
         } => to_binary(&query_verify_non_membership(
             deps,
             connection,
             revision_number,
             revision_height,
             proof,
-            path,
+            path_prefix,
+            path_key,
         )),
 
         _ => unimplemented!(),
@@ -77,7 +81,8 @@ fn query_verify_membership(
     revision_height: u64,
     proof: Binary,
     value: Binary,
-    path: String,
+    path_prefix: String,
+    path_key: String,
 ) -> VerifyMembershipResponse {
     let querier = KujiraQuerier::new(&deps.querier);
     querier
@@ -87,7 +92,8 @@ fn query_verify_membership(
             revision_height,
             proof,
             value,
-            path,
+            path_prefix,
+            path_key,
         ).unwrap()
 }
 
@@ -97,7 +103,8 @@ fn query_verify_non_membership(
     revision_number: u64,
     revision_height: u64,
     proof: Binary,
-    path: String,
+    path_prefix: String,
+    path_key: String,
 ) -> VerifyNonMembershipResponse {
     let querier = KujiraQuerier::new(&deps.querier);
     querier
@@ -106,6 +113,7 @@ fn query_verify_non_membership(
             revision_number,
             revision_height,
             proof,
-            path,
+            path_prefix,
+            path_key,
         ).unwrap()
 }
