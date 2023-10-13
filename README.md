@@ -58,9 +58,9 @@ This produces an `artifacts` directory with a `PROJECT_NAME.wasm`, as well as
 
 ## Interact with Kujira through CLI
 ### Setup IBC connected chains locally
-1. Clone the Kujira core[https://github.com/antstalepresh/core/tree/ibc_wasm_binding] and install the daemon using `make install`.
-2. For counterparty chain, clone the Terra core[https://github.com/terra-money/core/tree/v2.4.1] and install the daemon using `make install`.
-3. For relayer, clone the Go relayer[https://github.com/cosmos/relayer/tree/v2.4.2] and install the daemon using `make install`.
+1. Clone the [Kujira core](https://github.com/antstalepresh/core/tree/ibc_wasm_binding) and install the daemon using `make install`.
+2. For counterparty chain, clone the [Terra core](https://github.com/terra-money/core/tree/v2.4.1) and install the daemon using `make install`.
+3. For relayer, clone the [Go relayer](https://github.com/cosmos/relayer/tree/v2.4.2) and install the daemon using `make install`.
 4. Once both are installed, run the following script for setting up IBC env automatically.
 ```
 bash test/setup_ibc.sh
@@ -99,14 +99,15 @@ kujirad tx wasm instantiate 1 '{}' --from validator --label "ibc" --gas auto --g
 ```
 
 Now, we are all set for querying IBC through binding contract.
+### CLI examples for IBC verification through contract
 For querying **verify_membership**,
 ```
-kujirad query wasm contract-state smart kujira14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sl4e867 '{"verify_membership":{"connection":"connection-0","revision_number":0,"revision_height":9,"proof":"{base64 representation of proof info}","value":"base64 representation of value info"}}'
+kujirad query wasm contract-state smart kujira14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sl4e867 '{"verify_membership":{"connection":"connection-0","revision_number":0,"revision_height":9,"path_prefix":"ibc","path_key":"channelEnds/ports/transfer/channels/channel-0","proof":"{base64 representation of proof info}","value":"base64 representation of value info"}}'
 ```
 
 For querying **verify_non_membership**,
 ```
-kujirad query wasm contract-state smart kujira14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sl4e867 '{"verify_non_membership":{"connection":"connection-0","revision_number":0,"revision_height":9,"proof":"{base64 representation of proof info}"}}'
+kujirad query wasm contract-state smart kujira14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sl4e867 '{"verify_non_membership":{"connection":"connection-0","revision_number":0,"revision_height":9,"path_prefix":"ibc","path_key":"channelEnds/ports/transfer/channels/channel-0","proof":"{base64 representation of proof info}"}}'
 ```
 
 For both queries, they should return **true** if valid, or panic **error** if invalid.
@@ -114,4 +115,18 @@ For both queries, they should return **true** if valid, or panic **error** if in
 data:
   is_valid: true
 ```
+
+### How to get path
+Path is the combination of path prefix and path key. 
+Path prefix is usually module store key for the value you are going to verify and it is usually represented as module name.
+Path key is the combination of all store sub prefixes and the right format for its representation is `{prefix1}/{prefix2}/{prefix3} `
+
+Here is an example for getting path for user balance verification from other chain.
+Lets say you are going to verify {uatom} balance at {cosmosxxx} address.
+In KVStore of cosmos chain, uatom balance for the address is stored at following store key.
+
+```{bytes(0x02)}{bytes("cosmosxxx")}{bytes("uatom")}```
+
+In this case, path prefix is ```bank```, and path key is ```B/cosmosxxx/uatom```. (**B** is string representation of **0x02**)
+
 
