@@ -42,12 +42,10 @@ pub enum IbcQuery {
 #[cw_serde]
 pub struct VerifyMembershipResponse {
     pub is_valid: bool,
-    pub err: String,
 }
 
-/// VerifyMembershipResponse is data format returned from IbcRequest::VerifyNonMembership query
+/// VerifyNonMembershipResponse is data format returned from IbcRequest::VerifyNonMembership query
 #[cw_serde]
 pub struct VerifyNonMembershipResponse {
     pub is_valid: bool,
-    pub err: String,
 }
