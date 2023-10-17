@@ -51,7 +51,7 @@ pub fn query(deps: Deps<KujiraQuery>, _env: Env, msg: QueryMsg) -> StdResult<Bin
             value,
             path_prefix,
             path_key,
-        )),
+        )?),
 
         QueryMsg::VerifyNonMembership {
             connection,
@@ -68,7 +68,7 @@ pub fn query(deps: Deps<KujiraQuery>, _env: Env, msg: QueryMsg) -> StdResult<Bin
             proof,
             path_prefix,
             path_key,
-        )),
+        )?),
 
         _ => unimplemented!(),
     }
@@ -83,7 +83,7 @@ fn query_verify_membership(
     value: Binary,
     path_prefix: String,
     path_key: String,
-) -> VerifyMembershipResponse {
+) -> StdResult<VerifyMembershipResponse> {
     let querier = KujiraQuerier::new(&deps.querier);
     querier
         .query_verify_membership(
@@ -94,7 +94,7 @@ fn query_verify_membership(
             value,
             path_prefix,
             path_key,
-        ).unwrap()
+        )
 }
 
 fn query_verify_non_membership(
@@ -105,7 +105,7 @@ fn query_verify_non_membership(
     proof: Binary,
     path_prefix: String,
     path_key: String,
-) -> VerifyNonMembershipResponse {
+) -> StdResult<VerifyNonMembershipResponse> {
     let querier = KujiraQuerier::new(&deps.querier);
     querier
         .query_verify_non_membership(
@@ -115,5 +115,5 @@ fn query_verify_non_membership(
             proof,
             path_prefix,
             path_key,
-        ).unwrap()
+        )
 }
