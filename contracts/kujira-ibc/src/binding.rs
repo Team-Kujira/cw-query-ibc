@@ -38,14 +38,6 @@ pub enum IbcQuery {
   },
 }
 
-/// VerifyMembershipResponse is data format returned from IbcRequest::VerifyMembership query
+/// IbcVerifyResponse is data format returned from IbcRequest::VerifyMembership query
 #[cw_serde]
-pub struct VerifyMembershipResponse {
-    pub is_valid: bool,
-}
-
-/// VerifyNonMembershipResponse is data format returned from IbcRequest::VerifyNonMembership query
-#[cw_serde]
-pub struct VerifyNonMembershipResponse {
-    pub is_valid: bool,
-}
+pub struct IbcVerifyResponse {}

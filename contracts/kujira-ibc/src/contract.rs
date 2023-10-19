@@ -2,11 +2,11 @@
 
 use cosmwasm_std::{
     entry_point, to_binary,Binary, Deps, DepsMut, Env,
-    MessageInfo, Response, StdResult,
+    MessageInfo, Response, StdResult
 };
 use crate::{
     InstantiateMsg, ExecuteMsg, QueryMsg, 
-    binding::{KujiraMsg, KujiraQuery, VerifyMembershipResponse, VerifyNonMembershipResponse},
+    binding::{KujiraMsg, KujiraQuery},
     querier::KujiraQuerier,
 };
 
@@ -69,8 +69,6 @@ pub fn query(deps: Deps<KujiraQuery>, _env: Env, msg: QueryMsg) -> StdResult<Bin
             path_prefix,
             path_key,
         )?),
-
-        _ => unimplemented!(),
     }
 }
 
@@ -83,9 +81,9 @@ fn query_verify_membership(
     value: Binary,
     path_prefix: String,
     path_key: String,
-) -> StdResult<VerifyMembershipResponse> {
+) -> StdResult<String> {
     let querier = KujiraQuerier::new(&deps.querier);
-    querier
+    let res = querier
         .query_verify_membership(
             connection,
             revision_number,
@@ -94,7 +92,11 @@ fn query_verify_membership(
             value,
             path_prefix,
             path_key,
-        )
+        );
+    match res {
+        Ok(_) => Ok("success".to_string()),
+        Err(e) => Err(e),
+    }
 }
 
 fn query_verify_non_membership(
@@ -105,9 +107,9 @@ fn query_verify_non_membership(
     proof: Binary,
     path_prefix: String,
     path_key: String,
-) -> StdResult<VerifyNonMembershipResponse> {
+) -> StdResult<String> {
     let querier = KujiraQuerier::new(&deps.querier);
-    querier
+    let res = querier
         .query_verify_non_membership(
             connection,
             revision_number,
@@ -115,5 +117,10 @@ fn query_verify_non_membership(
             proof,
             path_prefix,
             path_key,
-        )
+        );
+
+    match res {
+        Ok(_) => Ok("success".to_string()), // Change this to your actual success response
+        Err(e) => Err(e),
+    }
 }
