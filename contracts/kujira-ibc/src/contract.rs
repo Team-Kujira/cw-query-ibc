@@ -1,15 +1,12 @@
-#[cfg(not(feature = "library"))]
-
-use cosmwasm_std::{
-    entry_point, to_binary,Binary, Deps, DepsMut, Env,
-    MessageInfo, Response, StdResult
-};
 use crate::{
-    InstantiateMsg, ExecuteMsg, QueryMsg, 
     binding::{KujiraMsg, KujiraQuery},
     querier::KujiraQuerier,
+    ExecuteMsg, InstantiateMsg, QueryMsg,
 };
-
+#[cfg(not(feature = "library"))]
+use cosmwasm_std::{
+    entry_point, to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
+};
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
@@ -80,19 +77,18 @@ fn query_verify_membership(
     proof: Binary,
     value: Binary,
     path_prefix: String,
-    path_key: String,
+    path_key: Binary,
 ) -> StdResult<String> {
     let querier = KujiraQuerier::new(&deps.querier);
-    let res = querier
-        .query_verify_membership(
-            connection,
-            revision_number,
-            revision_height,
-            proof,
-            value,
-            path_prefix,
-            path_key,
-        );
+    let res = querier.query_verify_membership(
+        connection,
+        revision_number,
+        revision_height,
+        proof,
+        value,
+        path_prefix,
+        path_key,
+    );
     match res {
         Ok(_) => Ok("success".to_string()),
         Err(e) => Err(e),
@@ -106,18 +102,17 @@ fn query_verify_non_membership(
     revision_height: u64,
     proof: Binary,
     path_prefix: String,
-    path_key: String,
+    path_key: Binary,
 ) -> StdResult<String> {
     let querier = KujiraQuerier::new(&deps.querier);
-    let res = querier
-        .query_verify_non_membership(
-            connection,
-            revision_number,
-            revision_height,
-            proof,
-            path_prefix,
-            path_key,
-        );
+    let res = querier.query_verify_non_membership(
+        connection,
+        revision_number,
+        revision_height,
+        proof,
+        path_prefix,
+        path_key,
+    );
 
     match res {
         Ok(_) => Ok("success".to_string()), // Change this to your actual success response
