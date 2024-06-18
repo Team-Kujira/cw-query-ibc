@@ -169,6 +169,20 @@ Note2: Revision height should use the one registered on chain.
     revision_number: "0"
   ```
 
+  KeyPath for IBC storage - to be converted to base64
+
+  ```
+  channelEnds/ports/transfer/channels/channel-0
+  ```
+
+  To get byte version of IBC storage
+
+  ```
+  http://localhost:26658/abci_query?path=%22/store/ibc/key%22&data=%22channelEnds/ports/transfer/channels/channel-0%22&prove=true&height=16
+
+  {"jsonrpc":"2.0","id":-1,"result":{"response":{"code":0,"log":"","info":"","index":"0","key":"Y2hhbm5lbEVuZHMvcG9ydHMvdHJhbnNmZXIvY2hhbm5lbHMvY2hhbm5lbC0w","value":"CAIQARoVCgh0cmFuc2ZlchIJY2hhbm5lbC0wIgxjb25uZWN0aW9uLTAqB2ljczIwLTE=","proofOps":{"ops":[{"type":"ics23:iavl","key":"Y2hhbm5lbEVuZHMvcG9ydHMvdHJhbnNmZXIvY2hhbm5lbHMvY2hhbm5lbC0w","data":"CtECCi1jaGFubmVsRW5kcy9wb3J0cy90cmFuc2Zlci9jaGFubmVscy9jaGFubmVsLTASMggCEAEaFQoIdHJhbnNmZXISCWNoYW5uZWwtMCIMY29ubmVjdGlvbi0wKgdpY3MyMC0xGgsIARgBIAEqAwACHiIrCAESBAIEHiAaISAbtmnkQL7805qlBZC6nNLhjeF5vtUEa1tkbU2f6RhLnCIrCAESBAQGHiAaISAyOsT7i2laW6GLG+uWTGdqKL2qYo4pG6P3RUvc+h0PxSIrCAESBAYKHiAaISCuupVUqHKuPDgaZKxag/9NoHxbHbSQG9dOEo2XjI/fiyIrCAESBAgYHiAaISBnoLbwuv7Uw3oaiA8r/GnOlhxHhEjq/bfQ7Dw/jHbX4CIrCAESBAo0HiAaISCo3dvyBw2X/f0+V/lOHQH7lILSYpG9LFpCeNfpEfsRgA=="},{"type":"ics23:simple","key":"aWJj","data":"CvkBCgNpYmMSIEoUk26rdOGiVdF+7zZQpeW55ozrMjy6OK7uVVyO7dwTGgkIARgBIAEqAQAiJQgBEiEBTh1cVjsNsP/cum/JfcDHsTtbXJw0E1fwiCdWUEfWxrkiJQgBEiEBzljGcUuGiS2eo40FXoa5riAAv9ayT6QGnk1DPfJUz7YiJwgBEgEBGiCOIhzC3CphQobtW1HGMxWzbwKs8nomGqMoRaP0EqIWjyIlCAESIQGD2gQ/uK4gvcIeOSrbwj/buLB0HcUUOTICeMiQeGWKtCInCAESAQEaIP/LwmZkXCoIRjBj5nWa7V3eqeE6UjeRp+BVteSf6D6h"}]},"height":"16","codespace":""}}}
+  ```
+
 - Typescript to generate storage proof
 
   - package.json
